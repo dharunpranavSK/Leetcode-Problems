@@ -1,0 +1,37 @@
+QUESTION:-
+Given a string s, remove duplicate letters so that every letter appears once and only once. You must make sure your result is 
+the smallest in lexicographical order among all possible results.
+
+Example 1:
+Input: s = "bcabc"
+Output: "abc"
+
+Example 2:
+Input: s = "cbacdcbc"
+Output: "acdb"
+
+CODE:-
+char* removeDuplicateLetters(char* s) {
+    int count[26] = {0};
+    int visited[26] = {0};
+    int len = strlen(s);
+    int i, j, uniqueChars = 0;
+    char* result = (char*)malloc(sizeof(char) * (len + 1));
+    for (i = 0; i < len; i++) {
+        count[s[i] - 'a']++;
+    }
+    for (i = 0; i < len; i++) {
+        count[s[i] - 'a']--;
+        if (visited[s[i] - 'a'])
+            continue;
+
+        while (uniqueChars > 0 && s[i] < result[uniqueChars - 1] &&
+               count[result[uniqueChars - 1] - 'a'] > 0) {
+            visited[result[--uniqueChars] - 'a'] = 0;
+        }
+        result[uniqueChars++] = s[i];
+        visited[s[i] - 'a'] = 1;
+    }
+    result[uniqueChars] = '\0';
+    return result;
+}
