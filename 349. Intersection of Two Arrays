@@ -1,0 +1,57 @@
+QUESTION:-
+Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must be unique and you may return the result in any order.
+
+Example 1:
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2]
+
+Example 2:
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [9,4]
+Explanation: [4,9] is also accepted.
+
+CODE:-
+int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size,
+                  int* returnSize) {
+    int* res = malloc(sizeof(int) * 500);
+    int count = 0;
+    if (nums1Size < nums2Size) {
+        for (int i = 0; i < nums1Size; i++) {
+            for (int j = 0; j < nums2Size; j++) {
+                if (nums1[i] == nums2[j]) {
+                    for (int k = j; k < nums2Size-1; k++) {
+                        nums2[k] = nums2[k + 1];
+                    }
+                    res[count++] = nums1[i];
+                    break;
+                }
+            }
+        }
+    } else {
+
+        for (int i = 0; i < nums2Size; i++) {
+            for (int j = 0; j < nums1Size; j++) {
+                if (nums2[i] == nums1[j]) {
+                    for (int k = j; k < nums1Size-1; k++) {
+                        nums1[k] = nums1[k + 1];
+                    }
+                    res[count++] = nums2[i];
+                    break;
+                }
+            }
+        }
+    }
+    for (int i = 0; i < count; i++) {
+        for (int j = i + 1; j < count; j++) {
+            if (res[i] == res[j]) {
+                for (int k = j; k < count - 1; k++) {
+                    res[k] = res[k + 1];
+                }
+                count--;
+                j--;
+            }
+        }
+    }
+    *returnSize = count;
+    return res;
+}
